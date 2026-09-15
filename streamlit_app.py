@@ -1,5 +1,11 @@
 import streamlit as st
 import requests
+import os
+
+BACKEND_URL = os.getenv(
+    "BACKEND_URL",
+    "http://127.0.0.1:5000"
+)
 
 st.title("AI Research Paper Assistant")
 
@@ -11,7 +17,7 @@ uploaded_file = st.file_uploader(
 if uploaded_file and st.button("Process PDF"):
 
     response = requests.post(
-        "http://127.0.0.1:5000/upload",
+        f"{BACKEND_URL}/upload",
         files={
             "file": uploaded_file
         }
@@ -34,7 +40,7 @@ question = st.text_input("Ask a question about the document")
 if st.button("Ask"):
     if question:
         response = requests.post(
-            "http://127.0.0.1:5000/ask",
+            f"{BACKEND_URL}/ask",
             json={"question": question}
         )
         result = response.json()
